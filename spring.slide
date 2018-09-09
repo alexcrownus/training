@@ -21,4 +21,4 @@ http://www.interswitch.com
 * What is Spring
 
 * Run Reactor Unit Test using Maven
-.play -edit reactortest.go /{start/,/end}/
+.play -edit spring/reactortest.go /{start/,/end}/
