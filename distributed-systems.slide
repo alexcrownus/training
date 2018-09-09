@@ -1,0 +1,412 @@
+Distributed Systems
+A Thorough Introduction
+10 Sep 2018
+Tags: distributed systems databases internet
+
+Adesegun Adeyemo
+Head, Research and Development
+Interswitch Group
+adesegun.adeyemo@interswitchgroup.com
+http://www.interswitch.com
+@alexcrownus
+
+* Agenda
+
+- What is a Distributed System
+- Why Distribution?
+- Goals and Challenges
+- Fallacies of Distributed Computing
+- Architectures
+- Examples
+
+* What is a Distributed System?
+
+* What is a Distributed System?
+
+
+A distributed system is a system whose components are located on different networked computers, which then communicate and coordinate their actions by passing messages to one other.
+
+The components interact with one other in order to achieve a common goal.
+
+The idea behind distributed systems is to provide a viewpoint of being a single coherent system, to the outside world.
+
+A computer program that runs within a distributed system is called a distributed program (and distributed programming is the process of writing such programs).
+
+Three significant characteristics of distributed systems are:
+
+- concurrency of components,
+- lack of a global clock, and
+- independent failure of components
+
+* Why Distribution?
+
+* Why Distribution?
+
+Systems are always distributed by necessity. The truth of the matter is — managing distributed systems is a complex topic chock-full of pitfalls and landmines. It is a headache to deploy, maintain and debug distributed systems, so why go there at all?
+
+*Sharing* *of* *information* *and* *services*
+
+*Possibility* *to* *add* *components* *improves:*
+
+- Availability
+- Reliability
+- Fault tolerance
+- Performance
+- Scalability
+- Redundancy
+
+* Goals and Challenges
+
+
+* Goals
+
+- Making resources accessible
+- Distribution transparency
+- Openness
+- Scalability
+- Security
+- System design requirements
+
+* Ideal Distributed Systems
+
+.image distributed-systems/goals.png _ 800
+
+* Challenges for Making Resources Accessible
+
+ Naming
+ Access control
+ Security
+ Availability
+ Performance
+ Mutual exclusion of users, fairness
+ Consistency in some cases
+
+* Challenges for Transparency
+
+ The fundamental idea: a collection of
+    - independent, autonomous actors
+ Transparency
+- concealment of distribution =>
+- user’s viewpoint: a single unified system
+ replications and migration cause need for ensuring
+consistency and distributed decision-making
+ failure modes
+ concurrency
+ heterogeneity
+
+* Failure Handling
+
+ More components => increased fault rate
+ Increased possibilities
+- more redundancy => more possibilities for fault tolerance
+- no centralized control => no fatal failure
+ Issues
+- Detecting failures
+- Masking failures
+- Recovery from failures
+- Tolerating failures
+- Redundancy
+ New: partial failures
+
+* Concurrency
+
+ Concurrency:
+- Several simultaneous users => integrity of data
+    -> mutual exclusion
+    -> synchronization
+    -> ext: transaction processing in data bases
+- Replicated data: consistency of information?
+- Partitioned data: how to determine the state of the system?
+- Order of messages?
+ There is no global clock!
+
+* Heterogeneity
+
+ Heterogeneity of
+- networks
+- computer hardware
+- operating systems
+- programming languages
+- implementations of different developers
+ Portability, interoperability
+ Mobile code, adaptability (applets, agents)
+ Middleware (CORBA etc)
+ Degree of transparency? Latency? Location-based
+services?
+
+* Challenges for Openness
+
+ Openness facilitates
+- interoperability, portability, extensibility, adaptivity
+ Activities addresses
+- extensions: new components
+- re-implementations (by independent providers)
+ Supported by
+- public interfaces
+- standardized communication protocols
+
+* Challenges for Scalability
+
+Scalability: The system will remain effective when there is a significant increase in
+ number of resources
+ number of users
+ The architecture and the implementation must allow it
+ The algorithms must be efficient under the circumstances to
+be expected
+ Example: the Internet
+
+* Challenges for Scalability (cont.)
+
+
+ Controlling the cost of physical resources
+ Controlling performance loss
+ Preventing software resources running out
+ Avoiding performance bottlenecks
+ Mechanisms (implement functions) & Policies (how to use
+the mechanisms)
+ Scaling solutions
+- asyncronous communication, decreased messaging (e.g.,
+forms)
+- caching (all sorts of hierarchical memories: data is closer to
+the user => no wait / assumes rather stable data!)
+- distribution i.e. partitioning of tasks or information (domains)
+(e.g., DNS)
+
+* Challenges for Security
+
+ Security: confidentiality, integrity, availability
+ Vulnerable components
+- channels (links <–> end-to-end paths)
+- processes (clients, servers, outsiders)
+ Threats
+- information leakage
+- integrity violation
+- denial of service
+- illegitimate usage
+
+Current issues:
+ denial-of-service attacks, security of mobile code, information flow;
+open wireless ad-hoc environments
+
+* Threats
+
+ Threats to channels
+- eavesdropping (data, traffic)
+- tampering, replaying
+- masquerading
+- denial of service
+ Threats to processes
+- server: client’s identity; client: server’s
+identity
+- unauthorized access (insecure
+access model)
+- unauthorized information flow
+(insecure flow model)
+
+* Defeating Security Threats
+
+ Techniques
+- cryptography
+- authentication
+- access control techniques
+-> intranet: firewalls
+-> services, objects: access control lists, capabilities
+ Policies
+- access control models
+- lattice models
+- information flow models
+ Leads to: secure channels, secure processes, controlled
+access, controlled flows
+
+* Environment challenges
+
+ A distributed system:
+- HW / SW components in different nodes
+- components communicate (using messages)
+- components coordinate actions (using messages)
+ Distances between nodes vary
+- in time: from msecs to weeks
+- in space: from mm’s to Mm’s
+- in dependability
+ Autonomous independent actors (=> even independent
+failures!)
+
+No global clock
+Global state information not possible
+
+* Challenges: Design Requirements
+
+ Performance issues
+- responsiveness: how quickly a system acknowledges a request (as opposed to processing it)
+- throughput: rate at which work get done
+- response time: time system takes to process a request
+- latency: time needed to accomplish remote requests
+- load sharing, load balancing
+- issue: algorithm vs. behavior
+ Quality of service
+- correctness (in nondeterministic environments)
+- reliability, availability, fault tolerance
+- security
+- performance
+- adaptability
+
+* Fallacies of Distributed Computing
+
+- The network is reliable
+- Latency is zero
+- Bandwidth is infinite
+- The network is secure
+- The topology does not change
+- There is one administrator
+- Transport cost is zero
+- The network is homogeneous
+- There is inherent, shared knowledge
+
+* The Network is Reliable
+
+ Some tools hide the network behind proxies
+ Method calls are reliable
+
+- Parameters will be sent
+- Return values will be received
+- Exceptions wil be caught
+
+ Web service calls are not reliable
+
+- Request may fail
+- Response may fail
+- Exception might be business logic or transport
+
+ Code for failure
+
+- Client can't tell which side failed
+- Indeterminate state
+
+# Related to Partition Tolerance of the CAP Theorem
+
+* Latency is Zero
+
+- Method calls take no time
+- Requests take time
+- State of limbo
+- Timeouts
+- Choreograph two machines
+- "Works fine on localhost"
+
+* Bandwidth is Infinite
+
+- Parameters passing always works
+- Shared memory
+- No shared memory on the network
+- Copy entire parameter into one request
+- Break parameter into chunks
+- Each chunk has latency
+
+* The Network is Secure
+
+- Attack vectors
+- Attacker needs only one vulnerability
+- Internal network is secure
+- Not! Most attacks come from the inside
+
+* The Topology Does Not Change
+
+- Easy to build assumptions into code
+- Platforms and tools
+- Access
+- Construct in configurable pieces
+
+* There is One Administrator
+
+ In dev, there is one ... you!
+ In production, there are many
+
+- Network
+- Machines
+- Applications
+
+ Cloud
+
+* Transport Cost is Zero
+
+ New objects are free
+ Messages cost money
+
+- Overhead: People, electricity and space
+- Per message: Bandwidth cost
+
+* The Network is Homogeneous
+
+ Application stacks
+
+- True for small systems
+- Large systems cross team boundaries
+
+ Versions
+
+- True for first version
+- Heterogeneous during upgrade
+- Bringing down the whole system won't always work
+- Window of heterogeneity opens wide over time
+
+ One chance to fix it
+
+- Before version 1 is deployed!
+
+* Architectures
+
+* Client-Server
+
+.image distributed-systems/client-server.png _ 600
+
+* Two-Tier
+
+.image distributed-systems/two-tier.png
+
+
+* Three-Tier
+
+.image distributed-systems/3tier.png
+
+* Peer to Peer
+
+.image distributed-systems/peer-to-peer.png _ 800
+
+* Replication
+
+Master/Slave
+.image distributed-systems/replication.png _ 800
+
+* Replication
+
+Master/Master
+.image distributed-systems/replication2.png _ 800
+
+* Cluster Computing
+
+.image distributed-systems/cluster.gif _ 800
+
+* Cloud Computing
+
+.image distributed-systems/cloud.gif _ 800
+
+* Distributed Systems Examples
+
+* Distributed Databases
+
+* Distributed File Systems
+
+Distributed file systems can be thought of as distributed data stores.
+
+They’re the same thing as a concept — storing and accessing a large amount of data across a cluster of machines all appearing as one.
+
+
+* Distributed Messaging Systems
+
+Messaging systems provide a central place for storage and propagation of messages/events inside your overall system.
+
+They allow you to decouple your application logic from directly talking with your other systems.
+
+* Distributed Ledgers
+
+A distributed ledger can be thought of as an immutable, append-only database that is replicated, synchronized and shared across all nodes in the distributed network.
