@@ -19,3 +19,6 @@ http://www.interswitch.com
 - Is Spring a Good Fit?
 
 * What is Spring
+
+* Run Reactor Unit Test using Maven
+.play -edit reactortest.go /{start/,/end}/
