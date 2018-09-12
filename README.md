@@ -23,3 +23,5 @@ Repo for training presentations
      present
 
  * Follow instructions output on the commandline
+
+ * Do a pull request
