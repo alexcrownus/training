@@ -3,7 +3,7 @@ Repo for training presentations
 
 * [Distributed Systems](https://talks.godoc.org/github.com/alexcrownus/training/distributed-systems.slide)
 * [Spring Framework](https://talks.godoc.org/github.com/alexcrownus/training/spring.slide)
-* [DevOps Guidelines](https://talks.godoc.org/github.com/alexcrownus/training/devops-guidelines.slide)
+* [DevOps Guidelines](https://talks.godoc.org/github.com/alexcrownus/training/devops-guildelines.slide)
 
 #### Contributor Guidelines
 
