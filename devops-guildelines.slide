@@ -1,0 +1,58 @@
+DevOps Guidelines
+From development to production
+10 Sep 2018
+Tags: devops 12-factor-app
+
+Adesegun Adeyemo
+Head, Research and Development
+Interswitch Group
+adesegun.adeyemo@interswitchgroup.com
+http://www.interswitch.com
+@alexcrownus
+
+* Goals
+
+- To enable applications to be built with portability and resilience when deployed to production
+- Declarative formats for setup automation, to minimize time and cost for new developers joining the project
+- Minimize divergence between development and production, enabling continuous deployment for maximum agility
+
+* Agenda
+- Codebase
+- Dependencies
+- Config
+- Backing services
+- Build, release, run
+- Processes
+- Port binding
+- Concurrency
+- Disposability
+- Dev/prod parity
+- Logs
+- Admin processes
+
+* Codebase
+
+*Objective:* There should be exactly one codebase for a deployed service with the codebase being used for many deployments.
+
+.image devops-guildelines/codebase-deploys.png
+
+* Codebase (cont'd)
+
+- Multiple apps sharing the same code is a violation
+- The solution here is to factor shared code into libraries which can be included through a dependency manager.
+- A deploy is a running instance of the app.
+- There is only one codebase per app, but there will be many deploys of the app: *DEV*, *UAT*, *PROD/DR* and (optionally) *SANDBOX*
+- The codebase is the same across all deploys, although different versions may be active in each deploy.
+- For example, a developer has some commits not yet deployed to *UAT*; *UAT* has some commits not yet deployed to *PROD*.
+- But they all share the same codebase, thus making them identifiable as different deploys of the same app.
+
+* Dependencies
+
+*Objective:* All dependencies should be declared and isolated, with no implicit reliance on system tools or libraries.
+
+- An application must declare all dependencies, completely and exactly, via a _dependency_ _declaration_ _manifest_.
+- *Maven* and *Nuget* for *Java* and *.Net* respectively
+- The full and explicit dependency specification is applied uniformly to both production and development.
+- One benefit of explicit dependency declaration is that it simplifies setup for developers new to the app.
+- The new developer can check out the app’s codebase onto their development machine, requiring only the language runtime and dependency manager installed as prerequisites.
+- They will be able to set up everything needed to run the app’s code with a deterministic _build_ _command_.
