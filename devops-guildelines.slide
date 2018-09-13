@@ -63,7 +63,7 @@ http://www.interswitch.com
 
 - Applications having such configurations hardcoded into the applications will be regarded as non-compliant
 - Applications should get all such configurations from the environment they are deployed in.
-- ConfigMaps and Secrets are one way applications can externalize configurations to the environment on kubernetes.
-- These configurations will be consumed by the application as environment variables.
-- Applications that do not run in kubernetes can leverage the language's functionality to consume environment variables e.g _System.getenv()_ in Java.
-- This will significantly reduce failed deployments due to hardcoded configurations that may not work across environments.
+- ConfigMaps and Secrets are one way applications can externalize configurations to the environment on *Kubernetes*.
+- Core Technology Team should expose a list of standard configurations for  developers to use within their applications.
+- These standard configurations will be centralized and managed by Core Technology and can only be updated by Core Technology Team.
+- Both applications on *Kubernetes* and legacy applications can take advantage of this, all existing applications should be refactored to use environment variables.
