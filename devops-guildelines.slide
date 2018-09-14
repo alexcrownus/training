@@ -67,3 +67,18 @@ http://www.interswitch.com
 - Core Technology Team should expose a list of standard configurations for  developers to use within their applications.
 - These standard configurations will be centralized and managed by Core Technology and can only be updated by Core Technology Team.
 - Both applications on *Kubernetes* and legacy applications can take advantage of this, all existing applications should be refactored to use environment variables.
+
+* Backing Services
+
+*Objective:* All backing services should be treated as attached resources and attached and detached by the execution environment.
+
+.image devops-guildelines/attached-resources.png
+
+* Backing Services (cont'd)
+
+- Applications that hardcode URL or locator/credentials for backing services will be regarded as non-compliant.
+- A backing service is something external your app depends on, like a database or messaging service.
+- Applications should declare and access backing services via an external configuration.
+- Local and 3rd Party Services are regarded as the same and should be treated as such.
+- All parameters required to access a backing service should be externalized as was described in configuration section.
+- This will enable you attach and detach these services without restarting the application.
