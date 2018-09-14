@@ -82,3 +82,18 @@ http://www.interswitch.com
 - Local and 3rd Party Services are regarded as the same and should be treated as such.
 - All parameters required to access a backing service should be externalized as was described in configuration section.
 - This will enable you attach and detach these services without restarting the application.
+
+* Build, release, run
+
+*Objective:* The delivery pipeline should strictly consist of build, release, run.
+
+.image devops-guildelines/release.png
+
+* Build, release, run (cont'd)
+
+- A single codebase is taken through a *build* process to produce a single executable artifact.
+- This build is merged with configuration information external to the app that is based on execution environment (dev, uat, prod). This combination of build and configuration makes a *release*.
+- This release is then delivered to the execution environment and *run*.
+- This speaks directly to CI/CD which is currently being managed by Jenkins.
+- Applications that do not have a CI/CD pipeline defined on Jenkins will be regarded as non-compliant.
+- This means Jenkins end to end managing the build, the release and the deployment to the execution environment.
