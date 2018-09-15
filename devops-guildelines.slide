@@ -117,3 +117,17 @@ http://www.interswitch.com
 - All applications should be bundles with a lightweight web server and it's services should be bound to a port on that web server and be accessible through that port
 - All applications that depend on deployment to a Web Server will be regarded as non-compliant
 - This will also ensure your service can be used as a backing service
+
+* Concurrency
+
+*Objective:* Concurrency is advocated by scaling individual processes.
+
+.image devops-guildelines/process-types.png
+
+* Concurrency (cont'd)
+
+- Applications must be built to to scale out as individual processes, this mean horizontal scaling or in other words adding replicas across nodes/servers rather than giving the server the application process is running in more resources (vertical scaling).
+- Kubernetes is built for horizontal scaling, allowing auto scaling or manual scaling at the click of a button.
+- Applications should also handle their own internal multiplexing via threads or in an asynchronous manner.
+- Application Processes should not try to daemonize, write PID files or do their own process management, but rather rely on the operating system's process manager.
+- All applications should have a process formation that the process manager can use to determine processes by their types.
