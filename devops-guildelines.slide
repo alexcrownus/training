@@ -97,3 +97,14 @@ http://www.interswitch.com
 - This speaks directly to CI/CD which is currently being managed by Jenkins.
 - Applications that do not have a CI/CD pipeline defined on Jenkins will be regarded as non-compliant.
 - This means Jenkins end to end managing the build, the release and the deployment to the execution environment.
+
+* Processes
+
+*Objective:* Applications should be deployed as one or more stateless processes with persisted data stored on a backing service.
+
+- Applications typically must have state data stored somewhere (e.g. session data).
+- Applications should store state data in a backing service like a cache or data store.
+- Applications having state data stored locally (e.g. sticky session) will be marked as non-complaint.
+- Services like Redis or Memcache can be used to manage state data.
+- Applications that run multiple instances and are managed by orchestrating tools like Kubernetes can take advantage of this, as loadbalancers like F5 manage traffic per instance, applications that store state data locally would have issues when requests get routed to instances that do not hold the state data required for a request to be processed. This also strengthens an application's ability to scale on demand.
+- An alternative to the point above would be intentionally direct requests to specific instances based on state data they hold but that seems impractical.
