@@ -104,7 +104,16 @@ http://www.interswitch.com
 
 - Applications typically must have state data stored somewhere (e.g. session data).
 - Applications should store state data in a backing service like a cache or data store.
-- Applications having state data stored locally (e.g. sticky session) will be marked as non-complaint.
+- Applications having state data stored locally (e.g. sticky session) will be regarded as non-complaint.
 - Services like Redis or Memcache can be used to manage state data.
 - Applications that run multiple instances and are managed by orchestrating tools like Kubernetes can take advantage of this, as loadbalancers like F5 manage traffic per instance, applications that store state data locally would have issues when requests get routed to instances that do not hold the state data required for a request to be processed. This also strengthens an application's ability to scale on demand.
 - An alternative to the point above would be intentionally direct requests to specific instances based on state data they hold but that seems impractical.
+
+* Port Binding
+
+*Objective:* Self-contained services should make themselves available to other services by specified ports.
+
+- All services must be self-contained, this means they should not depend on deployment to a web server container at runtime to create a web-facing service.
+- All applications should be bundles with a lightweight web server and it's services should be bound to a port on that web server and be accessible through that port
+- All applications that depend on deployment to a Web Server will be regarded as non-compliant
+- This will also ensure your service can be used as a backing service
