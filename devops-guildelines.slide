@@ -150,3 +150,11 @@ http://www.interswitch.com
 - Keep tools used in development and production as similar as possible.
 - Developers who wrote code should be closely involved in deploying it and watching its behavior in production.
 - A developer should write code and have it deployed hours or even just minutes later.
+
+* Logs
+
+*Objective:* Applications should produce logs as event streams and leave the execution environment to aggregate.
+
+- Applications should not be managing a datastore for log files, they should output log info as a continuous stream to stdout and the environment should handle how the logs are treated.
+- In Kubernetes, automatic logging can be configured to be directed to ElasticSearch.
+- Tools like Fluentd or Logplex can be used to route logs for applications that are not on Kubernetes.
