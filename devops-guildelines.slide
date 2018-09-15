@@ -56,3 +56,114 @@ http://www.interswitch.com
 - One benefit of explicit dependency declaration is that it simplifies setup for developers new to the app.
 - The new developer can check out the app’s codebase onto their development machine, requiring only the language runtime and dependency manager installed as prerequisites.
 - They will be able to set up everything needed to run the app’s code with a deterministic _build_ _command_.
+
+* Configuration
+
+*Objective:* All configurations that vary between deployment environments should be externalized as environment variables
+
+- Applications having such configurations hardcoded into the applications will be regarded as non-compliant
+- Applications should get all such configurations from the environment they are deployed in.
+- ConfigMaps and Secrets are one way applications can externalize configurations to the environment on *Kubernetes*.
+- Core Technology Team should expose a list of standard configurations for  developers to use within their applications.
+- These standard configurations will be centralized and managed by Core Technology and can only be updated by Core Technology Team.
+- Both applications on *Kubernetes* and legacy applications can take advantage of this, all existing applications should be refactored to use environment variables.
+
+* Backing Services
+
+*Objective:* All backing services should be treated as attached resources and attached and detached by the execution environment.
+
+.image devops-guildelines/attached-resources.png
+
+* Backing Services (cont'd)
+
+- Applications that hardcode URL or locator/credentials for backing services will be regarded as non-compliant.
+- A backing service is something external your app depends on, like a database or messaging service.
+- Applications should declare and access backing services via an external configuration.
+- Local and 3rd Party Services are regarded as the same and should be treated as such.
+- All parameters required to access a backing service should be externalized as was described in configuration section.
+- This will enable you attach and detach these services without restarting the application.
+
+* Build, release, run
+
+*Objective:* The delivery pipeline should strictly consist of build, release, run.
+
+.image devops-guildelines/release.png
+
+* Build, release, run (cont'd)
+
+- A single codebase is taken through a *build* process to produce a single executable artifact.
+- This build is merged with configuration information external to the app that is based on execution environment (dev, uat, prod). This combination of build and configuration makes a *release*.
+- This release is then delivered to the execution environment and *run*.
+- This speaks directly to CI/CD which is currently being managed by Jenkins.
+- Applications that do not have a CI/CD pipeline defined on Jenkins will be regarded as non-compliant.
+- This means Jenkins end to end managing the build, the release and the deployment to the execution environment.
+
+* Processes
+
+*Objective:* Applications should be deployed as one or more stateless processes with persisted data stored on a backing service.
+
+- Applications typically must have state data stored somewhere (e.g. session data).
+- Applications should store state data in a backing service like a cache or data store.
+- Applications having state data stored locally (e.g. sticky session) will be regarded as non-complaint.
+- Services like Redis or Memcache can be used to manage state data.
+- Applications that run multiple instances and are managed by orchestrating tools like Kubernetes can take advantage of this, as loadbalancers like F5 manage traffic per instance, applications that store state data locally would have issues when requests get routed to instances that do not hold the state data required for a request to be processed. This also strengthens an application's ability to scale on demand.
+- An alternative to the point above would be intentionally direct requests to specific instances based on state data they hold but that seems impractical.
+
+* Port Binding
+
+*Objective:* Self-contained services should make themselves available to other services by specified ports.
+
+- All services must be self-contained, this means they should not depend on deployment to a web server container at runtime to create a web-facing service.
+- All applications should be bundles with a lightweight web server and it's services should be bound to a port on that web server and be accessible through that port
+- All applications that depend on deployment to a Web Server will be regarded as non-compliant
+- This will also ensure your service can be used as a backing service
+
+* Concurrency
+
+*Objective:* Concurrency is advocated by scaling individual processes.
+
+.image devops-guildelines/process-types.png
+
+* Concurrency (cont'd)
+
+- Applications must be built to to scale out as individual processes, this mean horizontal scaling or in other words adding replicas across nodes/servers rather than giving the server the application process is running in more resources (vertical scaling).
+- Kubernetes is built for horizontal scaling, allowing auto scaling or manual scaling at the click of a button.
+- Applications should also handle their own internal multiplexing via threads or in an asynchronous manner.
+- Application Processes should not try to daemonize, write PID files or do their own process management, but rather rely on the operating system's process manager.
+- All applications should have a process formation that the process manager can use to determine processes by their types.
+
+* Disposability
+
+*Objective:* All applications must have fast startup and graceful shutdown to ensure a more robust and resilient system.
+
+- All applications should be able to be started and stopped at moments notice, to ensure elastic scaling out.
+- All requests to an application or service must be processed as quickly as possible, this is to ensure a reduction in time taken for a service to gracefully shutdown.
+- Processes should be robust against sudden death. In the event of a non-graceful shut down, like power outage or hardware problems, processes that were with the service should be handed to another service to complete.
+- Applications can use some  queuing tools (Beanstalk, RabbitMQ etc.) that would help return unfinished jobs back to the queue in the case of a failure.
+- Kubernetes structures that manage multiple instances of applications in containers takes care of disposability, since applications are stateless with backing services plugged in via configurations, a container can be taken down or started quickly.
+
+* Dev/Prod Parity
+
+*Objective:* All execution environments should be as similar as possible.
+
+- Applications should be designed for continuous deployment by keeping the gap between development and production small
+- Keep tools used in development and production as similar as possible.
+- Developers who wrote code should be closely involved in deploying it and watching its behavior in production.
+- A developer should write code and have it deployed hours or even just minutes later.
+
+* Logs
+
+*Objective:* Applications should produce logs as event streams and leave the execution environment to aggregate.
+
+- Applications should not be managing a datastore for log files, they should output log info as a continuous stream to stdout and the environment should handle how the logs are treated.
+- In Kubernetes, automatic logging can be configured to be directed to ElasticSearch.
+- Tools like Fluentd or Logplex can be used to route logs for applications that are not on Kubernetes.
+
+* Admin Processes
+
+*Objective:* Run admin/management tasks as one-off processes.
+
+- Separate admin tasks such as migrating a database or inspecting records from the rest of the application.
+- However, they must be run in the same environment and against the same base code and configuration as the application, and their code must be shipped alongside the application to prevent drift.
+- In Kubernetes, for simple jobs, the kubctl tool can be used on a container level to execute these admin tasks.
+- For complex jobs that require some level of orchestration, use Kubernetes Helm charts.
