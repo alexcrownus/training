@@ -131,3 +131,22 @@ http://www.interswitch.com
 - Applications should also handle their own internal multiplexing via threads or in an asynchronous manner.
 - Application Processes should not try to daemonize, write PID files or do their own process management, but rather rely on the operating system's process manager.
 - All applications should have a process formation that the process manager can use to determine processes by their types.
+
+* Disposability
+
+*Objective:* All applications must have fast startup and graceful shutdown to ensure a more robust and resilient system.
+
+- All applications should be able to be started and stopped at moments notice, to ensure elastic scaling out.
+- All requests to an application or service must be processed as quickly as possible, this is to ensure a reduction in time taken for a service to gracefully shutdown.
+- Processes should be robust against sudden death. In the event of a non-graceful shut down, like power outage or hardware problems, processes that were with the service should be handed to another service to complete.
+- Applications can use some  queuing tools (Beanstalk, RabbitMQ etc.) that would help return unfinished jobs back to the queue in the case of a failure.
+- Kubernetes structures that manage multiple instances of applications in containers takes care of disposability, since applications are stateless with backing services plugged in via configurations, a container can be taken down or started quickly.
+
+* Dev/Prod Parity
+
+*Objective:* All execution environments should be as similar as possible.
+
+- Applications should be designed for continuous deployment by keeping the gap between development and production small
+- Keep tools used in development and production as similar as possible.
+- Developers who wrote code should be closely involved in deploying it and watching its behavior in production.
+- A developer should write code and have it deployed hours or even just minutes later.
