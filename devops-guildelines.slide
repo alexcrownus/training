@@ -158,3 +158,12 @@ http://www.interswitch.com
 - Applications should not be managing a datastore for log files, they should output log info as a continuous stream to stdout and the environment should handle how the logs are treated.
 - In Kubernetes, automatic logging can be configured to be directed to ElasticSearch.
 - Tools like Fluentd or Logplex can be used to route logs for applications that are not on Kubernetes.
+
+* Admin Processes
+
+*Objective:* Run admin/management tasks as one-off processes.
+
+- Separate admin tasks such as migrating a database or inspecting records from the rest of the application.
+- However, they must be run in the same environment and against the same base code and configuration as the application, and their code must be shipped alongside the application to prevent drift.
+- In Kubernetes, for simple jobs, the kubctl tool can be used on a container level to execute these admin tasks.
+- For complex jobs that require some level of orchestration, use Kubernetes Helm charts.
