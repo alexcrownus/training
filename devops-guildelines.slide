@@ -46,16 +46,32 @@ http://www.interswitch.com
 - For example, a developer has some commits not yet deployed to *UAT*; *UAT* has some commits not yet deployed to *PROD*.
 - But they all share the same codebase, thus making them identifiable as different deploys of the same app.
 
+* Action Points
+
+- Developers should have only one codebase per application on stash.
+- Developers should build and deploy from master branch of a codebase only.
+- Developers should manage branches with git and should follow branching strategy
+- Core Technology Engineers should ensure all builds that pass through jenkins are from master branch.
+
+
 * Dependencies
 
 *Objective:* All dependencies should be declared and isolated, with no implicit reliance on system tools or libraries.
 
 - An application must declare all dependencies, completely and exactly, via a _dependency_ _declaration_ _manifest_.
-- *Maven* and *Nuget* for *Java* and *.Net* respectively
+- *Maven*, *npm* and *Nuget* for *Java*, *Javascript* and *.Net* respectively
+- There are edge cases where insisting on specific dependency managers may not work, such cases will be reviewed individually to identify the best way to handle dependencies.
 - The full and explicit dependency specification is applied uniformly to both production and development.
 - One benefit of explicit dependency declaration is that it simplifies setup for developers new to the app.
 - The new developer can check out the app’s codebase onto their development machine, requiring only the language runtime and dependency manager installed as prerequisites.
 - They will be able to set up everything needed to run the app’s code with a deterministic _build_ _command_.
+
+* Action Points
+
+- Developers should build system specific dependencies as libraries and push them to archival, to ensure compliance with dependency management.
+- Developers should not have libraries manually downloaded and stored locally in the lib folder of their project.
+- For projects that cannot use the recommended dependency managers, developers should identify an appropriate dependency manager that can be used.
+- Core Technology Engineers can install a SonarQube plugin to detect dependencies in projects
 
 * Configuration
 
@@ -67,6 +83,12 @@ http://www.interswitch.com
 - Core Technology Team should expose a list of standard configurations for  developers to use within their applications.
 - These standard configurations will be centralized and managed by Core Technology and can only be updated by Core Technology Team.
 - Both applications on *Kubernetes* and legacy applications can take advantage of this, all existing applications should be refactored to use environment variables.
+
+* Action Points
+
+- Developers need to list all the configurations required for all their applications and send this list to Core Technology
+- Core Technology Engineers need to develop a standard, environment agnostic naming convention for popular configurations in config maps and secrets
+- Developers need to take out all hard coded configurations and have their applications pick them from environment
 
 * Backing Services
 
@@ -83,6 +105,11 @@ http://www.interswitch.com
 - All parameters required to access a backing service should be externalized as was described in configuration section.
 - This will enable you attach and detach these services without restarting the application.
 
+* Action Points
+
+- Developers should ensure their application's health endpoints should be able to check for db connectivity, cache, application up time, API connectivity, and all other dependent services to ensure reporting on whether the application is functioning at 100%
+- Developers should follow Configuration standard above when defining backing services
+
 * Build, release, run
 
 *Objective:* The delivery pipeline should strictly consist of build, release, run.
@@ -98,6 +125,11 @@ http://www.interswitch.com
 - Applications that do not have a CI/CD pipeline defined on Jenkins will be regarded as non-compliant.
 - This means Jenkins end to end managing the build, the release and the deployment to the execution environment.
 
+* Action Points
+- Upgrade to Bitbucket and Jenkins.
+- All developers should review their CI/CD pipeline and ensure it is completely automated.
+- Developers should dockerize their applications and create a CI/CD pipeline that builds and deploys to kubernetes(Legacy apps may be excluded)
+
 * Processes
 
 *Objective:* Applications should be deployed as one or more stateless processes with persisted data stored on a backing service.
@@ -109,6 +141,9 @@ http://www.interswitch.com
 - Applications that run multiple instances and are managed by orchestrating tools like Kubernetes can take advantage of this, as loadbalancers like F5 manage traffic per instance, applications that store state data locally would have issues when requests get routed to instances that do not hold the state data required for a request to be processed. This also strengthens an application's ability to scale on demand.
 - An alternative to the point above would be intentionally direct requests to specific instances based on state data they hold but that seems impractical.
 
+* Action Points
+- Developers should refactor their applications to have all state data stored in a cache like redis, which will be a backing service referenced by the configuration process recommended above
+
 * Port Binding
 
 *Objective:* Self-contained services should make themselves available to other services by specified ports.
@@ -117,6 +152,10 @@ http://www.interswitch.com
 - All applications should be bundles with a lightweight web server and it's services should be bound to a port on that web server and be accessible through that port
 - All applications that depend on deployment to a Web Server will be regarded as non-compliant
 - This will also ensure your service can be used as a backing service
+
+* Action Points
+
+- Developers should bind any web facing service to a specific port and bundle the service with a lightweight web server.
 
 * Concurrency
 
@@ -132,6 +171,10 @@ http://www.interswitch.com
 - Application Processes should not try to daemonize, write PID files or do their own process management, but rather rely on the operating system's process manager.
 - All applications should have a process formation that the process manager can use to determine processes by their types.
 
+* Action Points
+
+- Developers should ensure they handle internal multiplexing via threads or in an asynchronous manner, this can be tested with load testing.
+
 * Disposability
 
 *Objective:* All applications must have fast startup and graceful shutdown to ensure a more robust and resilient system.
@@ -142,6 +185,14 @@ http://www.interswitch.com
 - Applications can use some  queuing tools (Beanstalk, RabbitMQ etc.) that would help return unfinished jobs back to the queue in the case of a failure.
 - Kubernetes structures that manage multiple instances of applications in containers takes care of disposability, since applications are stateless with backing services plugged in via configurations, a container can be taken down or started quickly.
 
+* Action Points
+
+- Core Technology Engineers should set up a time frame for which applications are allowed to shut down properly.
+- Core Technology Engineers should ensure instances can hand over processes to each other.
+- Core Technology Engineers should investigate why some containers take as much as 20 minutes to start up.
+- Developers should minimize complexity of functions in their application to reduce time taken to shut down gracefully.
+- Developers should ensure apps should be able to transfer processes to a queue for another instance to pick up
+
 * Dev/Prod Parity
 
 *Objective:* All execution environments should be as similar as possible.
@@ -151,6 +202,12 @@ http://www.interswitch.com
 - Developers who wrote code should be closely involved in deploying it and watching its behavior in production.
 - A developer should write code and have it deployed hours or even just minutes later.
 
+* Action Points
+
+- Core Technology Engineers should provide same environments for dev, uat and prod, with all required backing services, dbs etc.
+- Core Technology should ensure all live databases are lightweight.
+- Developers should deploy same branch to all environments to ensure parity of builds.
+
 * Logs
 
 *Objective:* Applications should produce logs as event streams and leave the execution environment to aggregate.
@@ -158,6 +215,11 @@ http://www.interswitch.com
 - Applications should not be managing a datastore for log files, they should output log info as a continuous stream to stdout and the environment should handle how the logs are treated.
 - In Kubernetes, automatic logging can be configured to be directed to ElasticSearch.
 - Tools like Fluentd or Logplex can be used to route logs for applications that are not on Kubernetes.
+
+* Action Points
+
+- Developers should ensure all their apps log to stdout
+- Core Technology Engineers should ensure kubernetes pipes logs to logstash.
 
 * Admin Processes
 
@@ -167,3 +229,6 @@ http://www.interswitch.com
 - However, they must be run in the same environment and against the same base code and configuration as the application, and their code must be shipped alongside the application to prevent drift.
 - In Kubernetes, for simple jobs, the kubctl tool can be used on a container level to execute these admin tasks.
 - For complex jobs that require some level of orchestration, use Kubernetes Helm charts.
+
+* Action Points
+- Core Technology Engineers should look into Helm charts

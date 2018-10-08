@@ -1,0 +1,83 @@
+Documentation
+Declaring a Standard
+17 Sep 2018
+Tags: documentation
+
+Adesegun Adeyemo
+Head, Research and Development
+Interswitch Group
+adesegun.adeyemo@interswitchgroup.com
+http://www.interswitch.com
+@alexcrownus
+
+* Goals
+
+- Define a standard for Software Architecture
+- Define a standard for Software Design
+- Define a standard for API documentation
+- Define a standard for Product Configuration Guides
+- Define a standard for SDK Documentation
+- Define a standard for User Guides
+
+* Architecture
+
+The C4 Approach
+
+- System Context -
+- Containers
+- Components
+- Classes
+
+- Sructurizr is a good tool that can be used to build architecture on the C4 Model.
+- Visio can also be used to build architecture based on the C4 model
+
+* Design
+
+- TBD
+
+* API Documentation
+
+- Open API Specification
+- Spring Cloud Contract
+- Would require a Converter to support both
+- Build or use an existing one?
+
+* Configuration Guides
+
+- Change History - Document Version, Product Version, Writer, Reviewer
+- Terms & Definitions
+- Introduction
+- Configuration Procedures
+    - Configuration A
+        - Prerequisites
+        - Systems Involved
+        - Reference Configurations(if any)
+        - Configuration Steps
+    - Configuration B
+        - Prerequisites
+        - Systems Involved
+        - Reference Configurations(if any)
+        - Configuration Steps
+
+
+* SDK Documentation
+
+- Introduction - A short introduction to what this SDK is intended for and who should use it.
+- Registration / Installation / Usage - How to start using this SDK (Snippet for importing with Maven/Nuget).
+- Functions SDK/API Supports - This should contain How To's of each function a typical user should be able to perform, with Sample Code included.
+
+- Markdown should be used to document the above template in detail
+
+* User Guides
+
+-
+
+TBD
+
+* Architecture Decision Records
+
+- Title - short noun phrase e.g. "Use React for Front End"
+- Status - Proposed/Accepted/Deprecated/Superseded
+- Context - The plain facts that led to this choice
+- Decision - "We will use React for Front End Development for Project X"
+- Consequences - All consequences, positive, negative or neutral.
