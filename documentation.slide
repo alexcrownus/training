@@ -23,7 +23,7 @@ http://www.interswitch.com
 
 The C4 Approach
 
-- System Context
+- System Context -
 - Containers
 - Components
 - Classes
@@ -38,28 +38,39 @@ The C4 Approach
 * API Documentation
 
 - Open API Specification
+- Spring Cloud Contract
+- Would require a Converter to support both
+- Build or use an existing one?
 
 * Configuration Guides
 
+- Change History - Document Version, Product Version, Writer, Reviewer
 - Terms & Definitions
 - Introduction
-- Prerequisites
 - Configuration Procedures
     - Configuration A
+        - Prerequisites
+        - Systems Involved
+        - Reference Configurations(if any)
         - Configuration Steps
     - Configuration B
+        - Prerequisites
+        - Systems Involved
+        - Reference Configurations(if any)
         - Configuration Steps
 
 
 * SDK Documentation
 
 - Introduction - A short introduction to what this SDK is intended for and who should use it.
-- Registration / Installation / Usage - How to start using this SDK (Snippet for importing with Maven/Nuget)
-- Functions SDK/API Supports - This should contain How To's of each function a typical user should be able to perform, with Sample Code included
+- Registration / Installation / Usage - How to start using this SDK (Snippet for importing with Maven/Nuget).
+- Functions SDK/API Supports - This should contain How To's of each function a typical user should be able to perform, with Sample Code included.
 
 - Markdown should be used to document the above template in detail
 
 * User Guides
+
+-
 
 TBD
 
@@ -68,5 +79,5 @@ TBD
 - Title - short noun phrase e.g. "Use React for Front End"
 - Status - Proposed/Accepted/Deprecated/Superseded
 - Context - The plain facts that led to this choice
-- Decision - "We will use React because of it's low complexity"
+- Decision - "We will use React for Front End Development for Project X"
 - Consequences - All consequences, positive, negative or neutral.
