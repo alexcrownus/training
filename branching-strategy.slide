@@ -1,0 +1,92 @@
+Branching Strategy
+A Guide
+10 Sep 2018
+Tags: devops 12-factor-app
+
+Adesegun Adeyemo
+Head, Research and Development
+Interswitch Group
+adesegun.adeyemo@interswitchgroup.com
+http://www.interswitch.com
+@alexcrownus
+
+* Objectives
+
+The purpose of reviewing our existing code branching strategy is to address common problems which we face during our day-to-day software development cycle. These include but not limited to:
+
+- inability of isolating features for testing
+- difficulty when reverting a specific feature without reverting other features of code changes
+- plenty of time being wasted during merge conflicts
+- inability of releasing urgent changes due to the existence of some uncompleted features in the existing code
+- more than one developer or team working on different parts of the code which unnecessarily delay each other.
+
+* Goals
+
+The goals of this assessment include:
+
+- Structured approach to developing new features and releases
+- Easy isolation of features for testing
+- Easy management of production codes while other development works are in progress
+- Easy and clean rollback to any previous iterations of source code
+- Easy synchronization of different development works running in parallel with little headache
+
+* The Strategy
+
+Our branching strategy will include two groups of code branches: Main and Support branches. These two can be differentiated based on the lifetime of the project
+The Main Branches will contain both Master and Develop Branches. The Support branches can be Feature, Release or Hotfix branches.
+
+* Main Branches
+
+- These branches will always be there and live as long as the project lives i.e infinite lifetime
+- Master Branch: This should always reflect a production-ready state i.e the exact replica of what exists on the production server. Each time we merge back into the master branch defines a new production release.
+- Develop Branch: This should reflects a state with the latest delivered development changes that are ready for the next release. This is our UAT replica. When the develop branch reaches a stable point and is ready to be released, all changes should be merged back into master and then tagged with a release number (as illustrated in figure 1 below).
+
+* Support Branches
+
+- These branches, unlike the main branches, will have a limited lifetime since they may be removed eventually. Each of these branches in this group are created for a specific purpose and therefore, bound to strict rules as to which branch may be their originating branch and which branch must be their merge targets.
+
+- Feature Branch: This should be created for the development of features for the upcoming or a distant future release.
+
+- Originating branch: May branch from develop branch
+
+- Merge target: Must be merged back into the develop branch
+
+- What are they for? New features and future releases.
+
+- Branch naming convention: Our naming convention shall be *firstname.lastname-feat-{futureName}*
+
+* Support Branches Cont'd
+
+- Release Branch: This branch should be created once ready or almost done for a new release. The release branch has a shorter lifetime than the feature branch. No new features should be added in a release branch, this guarantees more space for other team members working on new features from another development branch. Changes on this branch should be done to solve bugs found before release.
+
+- Originating branch: May branch from develop branch
+
+- Merge target: Must be merged back into the develop and master branch
+
+- What are they for? Preparation for New production release, minor bug fixes (that are not that urgent), consolidation of features into a single release.
+
+- Branch naming convention: Our naming convention shall be *firstname.lastname-release-{releaseName}*
+
+* Support Branches Cont'd
+
+- Release Branch: This branch should be created once ready or almost done for a new release. The release branch has a shorter lifetime than the feature branch. No new features should be added in a release branch, this guarantees more space for other team members working on new features from another development branch. Changes on this branch should be done to solve bugs found before release.
+
+- Originating branch: May branch from develop branch
+
+- Merge target: Must be merged back into the develop and master branch
+
+- What are they for? Preparation for New production release, minor bug fixes (that are not that urgent), consolidation of features into a single release.
+
+- Branch naming convention: Our naming convention shall be *firstname.lastname-release-{releaseName}*
+
+* Support Branches Cont'd
+
+- Hotfix branch: This branch should be created when there is a need to apply very urgent changes or hotfixes for bugs detected on the production that cannot wait for the next release. This has a shorter lifetime than the release branch even though it eventually creates a new release on the production.
+
+- Originating branch: May branch from master branch
+
+- Merge target: Must be merged back into the develop and master branch
+
+- What are they for? Fixes for critical (urgent) issues on production code.
+
+- Branch naming convention: Our naming convention shall be *firstname.lastname-hotfix-{hotfixDescription}*
